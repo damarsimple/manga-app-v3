@@ -48,6 +48,7 @@ import { event } from "../../modules/gtag";
 import { Ads } from "../../components/Ads";
 import { useUserStore } from "../../stores/user";
 import { useLoginModalStore } from "../../stores/loginModal";
+import { filterGenres } from '../../helper';
 interface SlugPageProps extends WithRouterProps {
   comic: Comic;
   top: Comic[];
@@ -123,36 +124,36 @@ function Slug({ top, router, comic, COMIC_ADS }: SlugPageProps) {
 
   const chaptersFiltered = search
     ? chapters?.filter((chapter) => {
-      return chapter.name
-        .toString()
-        .toLowerCase()
-        .includes(search.toLowerCase());
-    })
+        return chapter.name
+          .toString()
+          .toLowerCase()
+          .includes(search.toLowerCase());
+      })
     : chapters;
 
   const sortFunction = (e: Chapter, x: Chapter) =>
     sortMode == "desc" ? x.name - e.name : e.name - x.name;
 
   const { user } = useUserStore();
-  const { show } = useLoginModalStore()
+  const { show } = useLoginModalStore();
 
   const handleFollow = () => {
     if (!user) {
       show();
       return;
     }
-  }
+  };
 
   const handleReport = () => {
     if (!user) {
       show();
       return;
     }
-  }
+  };
 
   const handleRead = () => {
-    push(`/comic/${comic.slug}/chapters/${comic?.chapters[0]?.name}` );
-  }
+    push(`/comic/${comic.slug}/chapters/${comic?.chapters[0]?.name}`);
+  };
 
   return (
     <div>
@@ -169,7 +170,7 @@ function Slug({ top, router, comic, COMIC_ADS }: SlugPageProps) {
             publishedTime: moment(comic.createdAt).format(),
             modifiedTime: moment(comic.updatedAt).format(),
             authors: [SEO.canonical + "/list/author/" + comic.author.slug],
-            tags: comic.genres.map((e) => e.name),
+            tags: filterGenres(comic.genres).map((e) => e.name),
           },
           images: [
             {
@@ -199,8 +200,9 @@ function Slug({ top, router, comic, COMIC_ADS }: SlugPageProps) {
           <Box
             sx={{
               height: 250 * 2,
-              background: `linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 90%),linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),url('${comic.thumbWide ?? comic.thumb
-                }')`,
+              background: `linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 90%),linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),url('${
+                comic.thumbWide ?? comic.thumb
+              }')`,
               backgroundRepeat: "no-repeat",
               backgroundSize: "cover",
               backgroundPosition: "center",
@@ -319,13 +321,25 @@ function Slug({ top, router, comic, COMIC_ADS }: SlugPageProps) {
 
           <Box p={2} display="flex" gap={1}>
             <Box display="flex" gap={1}>
-              <Button variant="contained" endIcon={<BookmarkAdd />} onClick={handleFollow}>
+              <Button
+                variant="contained"
+                endIcon={<BookmarkAdd />}
+                onClick={handleFollow}
+              >
                 IKUTI KOMIK
               </Button>
-              <Button variant="contained" endIcon={<Book />} onClick={handleRead}>
+              <Button
+                variant="contained"
+                endIcon={<Book />}
+                onClick={handleRead}
+              >
                 BACA
               </Button>
-              <Button variant="contained" endIcon={<Report />} onClick={handleReport}>
+              <Button
+                variant="contained"
+                endIcon={<Report />}
+                onClick={handleReport}
+              >
                 LAPOR
               </Button>
             </Box>
@@ -346,7 +360,7 @@ function Slug({ top, router, comic, COMIC_ADS }: SlugPageProps) {
                 onClick={() => push("/list/comic/" + comic.type)}
               />
               <Divider orientation="vertical" flexItem />
-              {comic.genres.map((e, i) => (
+              {filterGenres(comic.genres).map((e, i) => (
                 <Chip
                   sx={{ mx: 0.5 }}
                   key={e.id}
@@ -375,7 +389,7 @@ function Slug({ top, router, comic, COMIC_ADS }: SlugPageProps) {
           label={capitalizeFirstLetter(comic.type)}
           onClick={() => push("/list/comic/" + comic.type)}
         />
-        {comic.genres.map((e, i) => (
+        {filterGenres(comic.genres).map((e, i) => (
           <Chip
             sx={{ m: 0.5 }}
             key={e.id}
@@ -440,7 +454,10 @@ function Slug({ top, router, comic, COMIC_ADS }: SlugPageProps) {
                   </RenderXTime>
                 )}
                 {chaptersFiltered?.sort(sortFunction).map((e, i) => (
-                  <Link key={i} href={`/comic/${comic.slug}/chapters/${e.name}`}>
+                  <Link
+                    key={i}
+                    href={`/comic/${comic.slug}/chapters/${e.name}`}
+                  >
                     <a>
                       <ListItem key={i} disablePadding>
                         <ListItemButton>

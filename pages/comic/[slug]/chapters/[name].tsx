@@ -31,6 +31,7 @@ import Link from "next/link";
 import { event } from "../../../../modules/gtag";
 import { Ads } from "../../../../components/Ads";
 import { client } from "../../../../modules/client";
+import { filterGenres } from "../../../../helper";
 
 function Id({
   chapter,
@@ -249,7 +250,7 @@ function Id({
             //@ts-ignore
             authors: [SEO.canonical + "/list/author/" + comic.author.slug],
             //@ts-ignore
-            tags: comic.genres.map((e) => e.name),
+            tags: filterGenres(comic.genres).map((e) => e.name),
           },
           images: [
             {

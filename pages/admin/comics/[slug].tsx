@@ -32,6 +32,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { Add, Edit, PanoramaFishEye, RemoveRedEye } from "@mui/icons-material";
 import MUITable from "../../../components/MUITable";
+import { filterGenres } from '../../../helper';
 
 export default function Slug() {
   const { push, query } = useRouter();
@@ -94,7 +95,7 @@ export default function Slug() {
     }
   );
 
-  const comicsGenres = comic?.genres.map((e) => e.name) || [];
+  const comicsGenres = filterGenres(comic?.genres).map((e) => e.name) || [];
 
   const [handle] = useMutation(
     gql`
@@ -544,7 +545,7 @@ export default function Slug() {
                   />
                 </Box>
                 <Box sx={{ maxHeight: 700, overflowY: "auto" }}>
-                  {comic?.genres
+                  {filterGenres(comic?.genres)
                     ?.filter((genre) =>
                       genre.name.toLowerCase().includes(searchGenre)
                     )

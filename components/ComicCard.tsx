@@ -15,6 +15,7 @@ import { Comic, Chapter } from "../types";
 import moment from "moment";
 import RenderMany from "./RenderMany";
 import LazyImage from "./LazyImage";
+import { filterGenres } from '../helper';
 
 type LayoutType = "detailed" | "carousel" | "top";
 
@@ -104,7 +105,7 @@ export const ComicCard = ({
     >
       <Box display="flex" alignItems="center" gap={0.1} overflow="hidden">
         <LocalMovies fontSize="small" />
-        {[...genres].slice(0, 2).map((e, i) => (
+        {[...filterGenres(genres)].slice(0, 2).map((e, i) => (
           <Chip
             key={i}
             label={e.name}
