@@ -35,6 +35,7 @@ import Link from "next/link";
 import { useState } from "react";
 import RenderMany from "../components/RenderMany";
 import { Ads } from "../components/Ads"; 
+import { filterGenres } from "../helper";
 
 const take = 36
 
@@ -542,7 +543,7 @@ const Home = ({ HOME_ADS }: { HOME_ADS: AdsType[] }) => {
               DAFTAR GENRE
             </Typography>
             <Divider sx={{ my: 2 }} />
-            {genres?.map((e, i) => (
+            {filterGenres(genres)?.map((e, i) => (
               <Link href={`/list/genre/` + e.slug} key={e.id}>
                 <a>
                   <Chip

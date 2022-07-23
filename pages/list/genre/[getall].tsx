@@ -18,6 +18,7 @@ import { client } from "../../../modules/client";
 import { gql } from "@apollo/client";
 import { GetServerSideProps } from "next";
 import SearchComicContainer from "../../../components/SearchComicContainer";
+import { filterGenres } from "../../../helper";
 
 interface GenrePageProps extends WithRouterProps {
   genres: Genre[];
@@ -188,7 +189,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   return {
     props: {
-      genres,
+      genres : filterGenres(genres),
       comics,
     },
   };
