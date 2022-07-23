@@ -438,5 +438,5 @@ const filtered =  [
 const compiled = filtered.map(e => e.name);
 
 export const filterGenres = (genres: Genre[] = []) => {
-    return genres.filter( e => compiled.includes(e.name))
+    return genres.filter( e => !compiled.includes(e.name))
 }
